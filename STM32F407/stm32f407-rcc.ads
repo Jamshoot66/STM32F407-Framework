@@ -1,4 +1,19 @@
+------------------------------------------------------------------------------
+--                              STM32F407 Framework                         --
+--                 Written by Sergey "Jamshoot" Gorshkov. 2017.             --
+--                                                                          --
+-- You can redistribute it and/or modify it under terms of the GNU General  --
+-- Public License as published  by the Free Software  Foundation;  either   --
+-- version 3,  or (at your option) any later version.                       --
+--                                                                          --
+-- You should have received a copy of the GNU General Public License and    --
+-- a copy of the GCC Runtime Library Exception along with this program.     --
+-- If not, see <http://www.gnu.org/licenses/>.                              --
+------------------------------------------------------------------------------
+
+with System;
 with STM32F407.Types; use STM32F407.Types;
+
 
 package STM32F407.RCC is
 
@@ -75,6 +90,10 @@ package STM32F407.RCC is
       SSCGR       at 128 range 0 .. 31;
       PLLI2SCFGR  at 132 range 0 .. 31;
    end record;
+
+   RCC_Register : STM32F407.RCC.rRCC_Register with
+     Volatile,
+     Address => System'To_Address(RCC_Base);
 
 end STM32F407.RCC;
 

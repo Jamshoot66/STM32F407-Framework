@@ -1,7 +1,20 @@
+------------------------------------------------------------------------------
+--                              STM32F407 Framework                         --
+--                 Written by Sergey "Jamshoot" Gorshkov. 2017.             --
+--                                                                          --
+-- You can redistribute it and/or modify it under terms of the GNU General  --
+-- Public License as published  by the Free Software  Foundation;  either   --
+-- version 3,  or (at your option) any later version.                       --
+--                                                                          --
+-- You should have received a copy of the GNU General Public License and    --
+-- a copy of the GCC Runtime Library Exception along with this program.     --
+-- If not, see <http://www.gnu.org/licenses/>.                              --
+------------------------------------------------------------------------------
+
 with System;
 
 with STM32F407.Types; use STM32F407.Types;
-with STM32F407.Offsets; use STM32F407.Offsets;
+with STM32F407.RCC; use STM32F407.RCC;
 
 package STM32F407.GPIO is
 
@@ -9,22 +22,39 @@ package STM32F407.GPIO is
    Low          : constant Bit_1 := 0;
    High         : constant Bit_1 := 1;
 
-   Pin0         : constant Half_Word := 2#0000_0000_0000_0001#;
-   Pin1         : constant Half_Word := 2#0000_0000_0000_0010#;
-   Pin2         : constant Half_Word := 2#0000_0000_0000_0100#;
-   Pin3         : constant Half_Word := 2#0000_0000_0000_1000#;
-   Pin4         : constant Half_Word := 2#0000_0000_0001_0000#;
-   Pin5         : constant Half_Word := 2#0000_0000_0010_0000#;
-   Pin6         : constant Half_Word := 2#0000_0000_0100_0000#;
-   Pin7         : constant Half_Word := 2#0000_0000_1000_0000#;
-   Pin8         : constant Half_Word := 2#0000_0001_0000_0000#;
-   Pin9         : constant Half_Word := 2#0000_0010_0000_0000#;
-   Pin10        : constant Half_Word := 2#0000_0100_0000_0000#;
-   Pin11        : constant Half_Word := 2#0000_1000_0000_0000#;
-   Pin12        : constant Half_Word := 2#0001_0000_0000_0000#;
-   Pin13        : constant Half_Word := 2#0010_0000_0000_0000#;
-   Pin14        : constant Half_Word := 2#0100_0000_0000_0000#;
-   Pin15        : constant Half_Word := 2#1000_0000_0000_0000#;
+   type tPin is (Pin0,
+                 Pin1,
+                 Pin2,
+                 Pin3,
+                 Pin4,
+                 Pin5,
+                 Pin6,
+                 Pin7,
+                 Pin8,
+                 Pin9,
+                 Pin10,
+                 Pin11,
+                 Pin12,
+                 Pin13,
+                 Pin14,
+                 Pin15);
+
+   for tPin use (Pin0  => 2#0000_0000_0000_0001#,
+                 Pin1  => 2#0000_0000_0000_0010#,
+                 Pin2  => 2#0000_0000_0000_0100#,
+                 Pin3  => 2#0000_0000_0000_1000#,
+                 Pin4  => 2#0000_0000_0001_0000#,
+                 Pin5  => 2#0000_0000_0010_0000#,
+                 Pin6  => 2#0000_0000_0100_0000#,
+                 Pin7  => 2#0000_0000_1000_0000#,
+                 Pin8  => 2#0000_0001_0000_0000#,
+                 Pin9  => 2#0000_0010_0000_0000#,
+                 Pin10 => 2#0000_0100_0000_0000#,
+                 Pin11 => 2#0000_1000_0000_0000#,
+                 Pin12 => 2#0001_0000_0000_0000#,
+                 Pin13 => 2#0010_0000_0000_0000#,
+                 Pin14 => 2#0100_0000_0000_0000#,
+                 Pin15 => 2#1000_0000_0000_0000#);
 
    --  MODER constants
    GPIO_Mode_IN      : constant Bit_2 := 0;
@@ -61,7 +91,7 @@ package STM32F407.GPIO is
    end record with Volatile;
 
    -- pointer to rGPIO_Register
-   type pRegister is access all rGPIO_Register;
+   type pGPIO_Register is access all rGPIO_Register;
 
    for rGPIO_Register use record
       MODER   at 0  range 0 .. 31;
@@ -97,8 +127,15 @@ package STM32F407.GPIO is
      Address => System'To_Address(GPIOE_Base);
 
    type rGPIO_Pin is record
-      Port : pRegister;
-      Pin_Number  : Half_Word;
+      Port : aliased pGPIO_Register;
+      Pin_Number  : tPin;
    end record;
+
+   -- constants for a RCC register
+   GPIOA_RCC_AHB1ENR_Enable : constant Byte := 2#0000_0001#;
+   GPIOB_RCC_AHB1ENR_Enable : constant Byte := 2#0000_0010#;
+   GPIOC_RCC_AHB1ENR_Enable : constant Byte := 2#0000_0100#;
+   GPIOD_RCC_AHB1ENR_Enable : constant Byte := 2#0000_1000#;
+   GPIOE_RCC_AHB1ENR_Enable : constant Byte := 2#0001_0000#;
 
 end STM32F407.GPIO;
