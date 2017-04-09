@@ -11,11 +11,8 @@
 -- If not, see <http://www.gnu.org/licenses/>.                              --
 ------------------------------------------------------------------------------
 
+with System;
 with STM32F407.Types; use STM32F407.Types;
---with STM32F407.Offsets; use STM32F407.Offsets;
-
---with System;
-
 
 package STM32F407.DAC is
 
@@ -75,9 +72,7 @@ package STM32F407.DAC is
 
       SWTRIG1   : Bit_1;
       SWTRIG2   : Bit_1;
-      Reserved : Bit_4; --reserved bits 2..32
-      --Reserved2 : Byte;
-      --Reserved3 : Half_Word;
+      Reserved  : Bit_4; --reserved bits 2..32
 
    end record;
 
@@ -97,20 +92,21 @@ package STM32F407.DAC is
 
    end record;
 
---   for tDAC_DHR8RD use record
---
---      DACC1DHR at 0 range 0..7;
---      DACC2DHR at 8 range 0..7;
---   end record;
+   DAC_CR : STM32F407.DAC.tDAC_CR with
+     Volatile,
+     Address => System'To_Address(DAC_Base);
 
+   DAC_SWTRIGR : STM32F407.DAC.tDAC_SWTRIGR with
+     Volatile,
+     Address => System'To_Address(DAC_SWTRIGR_Base);
 
+   DAC_DHR12R1 : Word with
+     Volatile,
+     Address => System'To_Address(DAC_DHR12R1_Base);
 
-
-   --cSW : Word with
-   --  Volatile,
-   --  Address => System'To_Address(DAC_SWTRIGR_Base);
-
-   --DAC data holding registers
+   DAC_DOR1 : Word with
+     Volatile,
+     Address => System'To_Address(DAC_DOR1_Base);
 
 
 

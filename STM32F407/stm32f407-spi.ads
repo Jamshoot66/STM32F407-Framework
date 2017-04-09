@@ -11,6 +11,7 @@
 -- If not, see <http://www.gnu.org/licenses/>.                              --
 ------------------------------------------------------------------------------
 
+with System;
 with STM32F407.Types; use STM32F407.Types;
 
 package STM32F407.SPI is
@@ -349,6 +350,22 @@ package STM32F407.SPI is
       MSB at 0  range 8 .. 15;
 
    end record;
+
+   SPI1_CR1 : SPI.rSPI_CR1 with
+     Volatile,
+     Address => System'To_Address(SPI1_Base + SPI_CR1_Offset);
+
+   SPI1_CR2 : SPI.rSPI_CR2 with
+     Volatile,
+     Address => System'To_Address(SPI1_Base + SPI_CR2_Offset);
+
+   SPI1_SR : SPI.rSPI_SR with
+     Volatile,
+     Address => System'To_Address(SPI1_Base + SPI_SR_Offset);
+
+   SPI1_DR : SPI.rSPI_DR with
+     Volatile,
+     Address => System'To_Address(SPI1_Base + SPI_DR_Offset);
 
    procedure Transmit_8bit(fMessage : Byte);
    function Recieve_8bit return Byte;
