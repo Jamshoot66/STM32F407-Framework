@@ -11,6 +11,7 @@
 -- If not, see <http://www.gnu.org/licenses/>.                              --
 ------------------------------------------------------------------------------
 
+
 package STM32F407.GPIO.Utils is
 
 
@@ -22,12 +23,18 @@ package STM32F407.GPIO.Utils is
 
 
    --Simple init port/pin as a digital output
-   --Params:
+   --GPIO params:
    -- MODER   is GPIO_Mode_OUT;
-   -- OTYPER  is GPIO_Type_PP;
-   -- OSPEEDR is GPIO_Speed_100MHz;
-   -- PUPDR   is GPIO_No_Pull;
+   -- OTYPER  is GPIO_Type_PP (push pull);
+   -- OSPEEDR is GPIO_Speed_100MHz (max speed);
+   -- PUPDR   is GPIO_No_Pull (no pullup or pulldown);
    procedure Init_as_Digital_Output(fGPIO_Pin : in out rGPIO_Pin);
+
+   --Simple init port/pin as a digital input
+   --GPIO params:
+   -- MODER   is GPIO_Mode_IN;
+   -- PUPDR   is GPIO_No_Pull (no pullup or pulldown)
+   procedure Init_as_Digital_Input(fGPIO_Pin : in out rGPIO_Pin);
 
    --Set enable bit to RCC register
    --@Port is a pointer to GPIOA (B, C etc.) from *.GPIO package

@@ -18,10 +18,25 @@ with STM32F407.RCC; use STM32F407.RCC;
 
 package STM32F407.GPIO is
 
-      --constansts
+   ---------------------------
+   -- Basic GPIO constansts --
+   ---------------------------
+
    Low          : constant Bit_1 := 0;
    High         : constant Bit_1 := 1;
 
+
+   -- Тип tPin используется для указания конкретного пина ввода/вывода
+   -- Использование:
+   -- а) tPin'Enum_Rep( PinXX ) для получение константы для чтения/установки бита
+   --    в регистры BSRR, IDR;
+   --    Пример:
+   --    fGPIO_Pin.Port.BSRR := fGPIO_Pin.Port.BSRR or
+   --                           tPin'Enum_Rep(fGPIO_Pin.Pin_Number);
+   -- б) tPin'Pos ( PinXX ) при использовании типа в качестве индекса
+   --    для типа rGPIO_Register
+   --    Пример:
+   --    fGPIO_Pin.Port.MODER( tPin'Pos(fGPIO_Pin.Pin_Number) ) := ...
    type tPin is (Pin0,
                  Pin1,
                  Pin2,
@@ -56,13 +71,26 @@ package STM32F407.GPIO is
                  Pin14 => 2#0100_0000_0000_0000#,
                  Pin15 => 2#1000_0000_0000_0000#);
 
-   --  MODER constants
-   GPIO_Mode_IN      : constant Bit_2 := 0;
-   GPIO_Mode_OUT     : constant Bit_2 := 1;
-   GPIO_Mode_AF      : constant Bit_2 := 2;
-   GPIO_Mode_AN      : constant Bit_2 := 3;
+   --  MODER (Mode register) constants
+   type GPIO_Mode is ( GPIO_Moder_IN,
+                       GPIO_Moder_OUT,
+                       GPIO_Moder_AF,
+                       GPIO_Moder_AN);
+
+   for GPIO_Mode use ( GPIO_Moder_IN  => 2#00#,
+                      GPIO_Moder_OUT  => 2#01#,
+                      GPIO_Moder_AF   => 2#10#,
+                      GPIO_Moder_AN   => 2#11#);
+
+   --GPIO_Mode_IN      : constant Bit_2 := 0;
+   --GPIO_Mode_OUT     : constant Bit_2 := 1;
+   --GPIO_Mode_AF      : constant Bit_2 := 2;
+   --GPIO_Mode_AN      : constant Bit_2 := 3;
 
    --  OTYPER constants
+
+   f
+
    GPIO_Type_PP      : constant Bit_1 := 0; -- Push/pull
    GPIO_Type_OD      : constant Bit_1 := 1; -- Open drain
 
