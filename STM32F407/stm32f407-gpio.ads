@@ -72,38 +72,42 @@ package STM32F407.GPIO is
                  Pin15 => 2#1000_0000_0000_0000#);
 
    --  MODER (Mode register) constants
-   type GPIO_Mode is ( GPIO_Moder_IN,
-                       GPIO_Moder_OUT,
-                       GPIO_Moder_AF,
-                       GPIO_Moder_AN);
+   type GPIO_Mode is (GPIO_Moder_IN,
+                      GPIO_Moder_OUT,
+                      GPIO_Moder_AF,
+                      GPIO_Moder_AN);
 
-   for GPIO_Mode use ( GPIO_Moder_IN  => 2#00#,
+   for GPIO_Mode use (GPIO_Moder_IN   => 2#00#,
                       GPIO_Moder_OUT  => 2#01#,
                       GPIO_Moder_AF   => 2#10#,
                       GPIO_Moder_AN   => 2#11#);
 
-   --GPIO_Mode_IN      : constant Bit_2 := 0;
-   --GPIO_Mode_OUT     : constant Bit_2 := 1;
-   --GPIO_Mode_AF      : constant Bit_2 := 2;
-   --GPIO_Mode_AN      : constant Bit_2 := 3;
+   --  OTYPER (Output type register) constants
+   type GPIO_Type is (GPIO_Type_Push_Pull,
+                      GPIO_Type_Open_Drain);
 
-   --  OTYPER constants
-
-   f
-
-   GPIO_Type_PP      : constant Bit_1 := 0; -- Push/pull
-   GPIO_Type_OD      : constant Bit_1 := 1; -- Open drain
+   for GPIO_Type use (GPIO_Type_Push_Pull  => 2#0#,
+                      GPIO_Type_Open_Drain => 2#1#);
 
    --  OSPEEDR constants
-   GPIO_Speed_2MHz   : constant Bit_2 := 0; -- Low speed
-   GPIO_Speed_25MHz  : constant Bit_2 := 1; -- Medium speed
-   GPIO_Speed_50MHz  : constant Bit_2 := 2; -- Fast speed
-   GPIO_Speed_100MHz : constant Bit_2 := 3; -- High speed on 30pF, 80MHz on 15
+   type GPIO_Speed is (GPIO_Speed_2MHz,
+                       GPIO_Speed_25MHz,
+                       GPIO_Speed_50MHz,
+                       GPIO_Speed_100MHz);
+
+   for GPIO_Speed use (GPIO_Speed_2MHz   => 2#00#,
+                       GPIO_Speed_25MHz  => 2#01#,
+                       GPIO_Speed_50MHz  => 2#10#,
+                       GPIO_Speed_100MHz => 2#11#);
 
    --  PUPDR constants
-   GPIO_No_Pull      : constant Bit_2 := 0;
-   GPIO_Pull_Up      : constant Bit_2 := 1;
-   GPIO_Pull_Down    : constant Bit_2 := 2;
+   type GPIO_Pullup_Pulldown is (GPIO_No_Pull,
+                                 GPIO_Pull_Up,
+                                 GPIO_Pull_Down);
+
+   for GPIO_Pullup_Pulldown use (GPIO_No_Pull   => 2#00#,
+                                 GPIO_Pull_Up   => 2#01#,
+                                 GPIO_Pull_Down => 2#11#);
 
    type rGPIO_Register is record
       MODER   : Bit_16x2;   --  mode register

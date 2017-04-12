@@ -60,10 +60,13 @@ package body STM32F407.GPIO.Utils is
         GPIO_Mode'Enum_Rep(GPIO_Moder_OUT);
 
       fGPIO_Pin.Port.OTYPER( tPin'Pos(fGPIO_Pin.Pin_Number) ) :=
-        GPIO_OTYPE'Enum_Rep(GPIO_Type_PP);
+        GPIO_Type'Enum_Rep(GPIO_Type_Push_Pull);
 
-      fGPIO_Pin.Port.OSPEEDR( tPin'Pos(fGPIO_Pin.Pin_Number) ) := GPIO_Speed_100MHz;
-      fGPIO_Pin.Port.PUPDR( tPin'Pos(fGPIO_Pin.Pin_Number) ) := GPIO_No_Pull;
+      fGPIO_Pin.Port.OSPEEDR( tPin'Pos(fGPIO_Pin.Pin_Number) ) :=
+        GPIO_Speed'Enum_Rep(GPIO_Speed_100MHz);
+
+      fGPIO_Pin.Port.PUPDR( tPin'Pos(fGPIO_Pin.Pin_Number) ) :=
+        GPIO_Pullup_Pulldown'Enum_Rep(GPIO_No_Pull);
 
    exception
       when Constraint_Error =>
@@ -75,8 +78,11 @@ package body STM32F407.GPIO.Utils is
    procedure Init_as_Digital_Input(fGPIO_Pin : in out rGPIO_Pin) is
    begin
 
-      fGPIO_Pin.Port.MODER( tPin'Pos(fGPIO_Pin.Pin_Number) ) := GPIO_Mode_IN;
-      fGPIO_Pin.Port.PUPDR( tPin'Pos(fGPIO_Pin.Pin_Number) ) := GPIO_No_Pull;
+      fGPIO_Pin.Port.MODER( tPin'Pos(fGPIO_Pin.Pin_Number) ) :=
+        GPIO_Mode'Enum_Rep(GPIO_Moder_IN);
+
+      fGPIO_Pin.Port.PUPDR( tPin'Pos(fGPIO_Pin.Pin_Number) ) :=
+        GPIO_Pullup_Pulldown'Enum_Rep(GPIO_No_Pull);
 
    exception
       when Constraint_Error =>
