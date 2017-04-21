@@ -57,7 +57,7 @@ package body STM32F407.GPIO.Utils is
    begin
 
       fGPIO_Pin.Port.MODER( tPin'Pos(fGPIO_Pin.Pin_Number) ) :=
-        GPIO_Mode'Enum_Rep(GPIO_Moder_OUT);
+        GPIO_Mode'Enum_Rep(GPIO_Mode_OUT);
 
       fGPIO_Pin.Port.OTYPER( tPin'Pos(fGPIO_Pin.Pin_Number) ) :=
         GPIO_Type'Enum_Rep(GPIO_Type_Push_Pull);
@@ -79,7 +79,7 @@ package body STM32F407.GPIO.Utils is
    begin
 
       fGPIO_Pin.Port.MODER( tPin'Pos(fGPIO_Pin.Pin_Number) ) :=
-        GPIO_Mode'Enum_Rep(GPIO_Moder_IN);
+        GPIO_Mode'Enum_Rep(GPIO_Mode_IN);
 
       fGPIO_Pin.Port.PUPDR( tPin'Pos(fGPIO_Pin.Pin_Number) ) :=
         GPIO_Pullup_Pulldown'Enum_Rep(GPIO_No_Pull);

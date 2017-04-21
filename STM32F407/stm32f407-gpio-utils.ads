@@ -1,6 +1,7 @@
 ------------------------------------------------------------------------------
 --                              STM32F407 Framework                         --
 --                 Written by Sergey "Jamshoot" Gorshkov. 2017.             --
+--                           Default encoding is UTF-8.                     --
 --                                                                          --
 -- You can redistribute it and/or modify it under terms of the GNU General  --
 -- Public License as published  by the Free Software  Foundation;  either   --
@@ -14,30 +15,85 @@
 
 package STM32F407.GPIO.Utils is
 
+   ----------------------------------------------------------------------------
+   -- Вспомогательный тип для упрощенного использования конкретного вывода   --
+   -- GPIO.                                                                  --
+   -- Использование:                                                         --
+   -- declare                                                                --
+   --   LED1 : rGPIO_Pin := rGPIO_Pin'(Port       => GPIOA'Access,           --
+   --                                  Pin_Number => Pin1);                  --
+   --   ...                                                                  --
+   -- begin                                                                  --
+   --     --включение тактирования GPIO                                      --
+   --   STM32F407.GPIO.Utils.RCC_Clock_Enable(LED1.Port);                    --
+   --     --быстрая настройка вывода как цифрового                           --
+   --   STM32F407.GPIO.Utils.Init_as_Digital_Output( LED1 );                 --
+   --     --выставление "высокого" состояния вывода                          --
+   --   STM32F407.GPIO.Utils.Set_Pin( LED1, High );                          --
+   ----------------------------------------------------------------------------
+   type rGPIO_Pin is record
+      Port : aliased pGPIO_Register;
+      Pin_Number  : tPin;
+   end record;
 
-   --Set or reset pin.
+   ----------------------------------------------------------------------------
+   -- Вспомогательная процедура установки высокого/низкого состояния вывода  --
+   -- GPIO.                                                                  --
+   -- Использование:                                                         --
+   -- STM32F407.GPIO.Utils.Set_Pin( LED1, High );                            --
+   ----------------------------------------------------------------------------
    procedure Set_Pin(fGPIO_Pin : in out rGPIO_Pin; HighLow : Bit_1);
 
-   -- Returns TRUE is pin is High, and FALSE if it is not
+   ----------------------------------------------------------------------------
+   -- Вспомогательная функция, возвращающая true, если вывон находится в     --
+   -- высоком состоянии                                                      --
+   -- Использование:                                                         --
+   -- LED1_Setted := STM32F407.GPIO.Utils.Is_Set( LED1 );                    --
+   ----------------------------------------------------------------------------
    function Is_Set(fGPIO_Pin : in out rGPIO_Pin) return Boolean;
 
 
-   --Simple init port/pin as a digital output
-   --GPIO params:
-   -- MODER   is GPIO_Mode_OUT;
-   -- OTYPER  is GPIO_Type_PP (push pull);
-   -- OSPEEDR is GPIO_Speed_100MHz (max speed);
-   -- PUPDR   is GPIO_No_Pull (no pullup or pulldown);
+   ----------------------------------------------------------------------------
+   -- Вспомогательная процедура настройки вывода как цифрового               --
+   --                                                                        --
+   -- Использование:                                                         --
+   --   STM32F407.GPIO.Utils.Init_as_Digital_Output( LED1 );                 --
+   --                                                                        --
+   -- Параметры вывода:                                                      --
+   -- MODER   - GPIO_Mode_OUT;                                               --
+   -- OTYPER  - GPIO_Type_PP;                                                --
+   -- OSPEEDR - GPIO_Speed_100MHz;                                           --
+   -- PUPDR   - GPIO_No_Pull;                                                --
+   --                                                                        --
+   -- Примечание. Перед использованием, необходимо включить тактирование     --
+   -- порта GPIO (регистр RCC):                                              --
+   --   STM32F407.GPIO.Utils.RCC_Clock_Enable(LED1.Port);                    --
+   ----------------------------------------------------------------------------
    procedure Init_as_Digital_Output(fGPIO_Pin : in out rGPIO_Pin);
 
-   --Simple init port/pin as a digital input
-   --GPIO params:
-   -- MODER   is GPIO_Mode_IN;
-   -- PUPDR   is GPIO_No_Pull (no pullup or pulldown)
+   ----------------------------------------------------------------------------
+   -- Вспомогательная процедура настройки вывода как цифрового входа         --
+   --                                                                        --
+   -- Использование:                                                         --
+   --   STM32F407.GPIO.Utils.Init_as_Digital_Input( LED1 );                  --
+   --                                                                        --
+   -- Параметры вывода:                                                      --
+   -- MODER   - GPIO_Mode_IN;                                                --
+   -- PUPDR   - GPIO_No_Pull;                                                --
+   --                                                                        --
+   -- Примечание. Перед использованием, необходимо включить тактирование     --
+   -- порта GPIO (регистр RCC):                                              --
+   --   STM32F407.GPIO.Utils.RCC_Clock_Enable(LED1.Port);                    --
+   ----------------------------------------------------------------------------
    procedure Init_as_Digital_Input(fGPIO_Pin : in out rGPIO_Pin);
 
-   --Set enable bit to RCC register
-   --@Port is a pointer to GPIOA (B, C etc.) from *.GPIO package
+
+   ----------------------------------------------------------------------------
+   -- Вспомогательная процедура включения тактирования GPIO                  --
+   --                                                                        --
+   -- Использование:                                                         --
+   --   STM32F407.GPIO.Utils.RCC_Clock_Enable(LED1.Port);                    --
+   ----------------------------------------------------------------------------
    procedure RCC_Clock_Enable( Port : aliased STM32F407.GPIO.pGPIO_Register );
 
 end STM32F407.GPIO.Utils;

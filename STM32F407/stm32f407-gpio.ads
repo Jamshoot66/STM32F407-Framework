@@ -1,6 +1,7 @@
 ------------------------------------------------------------------------------
 --                              STM32F407 Framework                         --
 --                 Written by Sergey "Jamshoot" Gorshkov. 2017.             --
+--                           Default encoding is UTF-8.                     --
 --                                                                          --
 -- You can redistribute it and/or modify it under terms of the GNU General  --
 -- Public License as published  by the Free Software  Foundation;  either   --
@@ -25,9 +26,9 @@ with STM32F407.RCC; use STM32F407.RCC;
 ------------------------------------------------------------------------------
 package STM32F407.GPIO is
 
-   ---------------------------
-   -- Basic GPIO constansts --
-   ---------------------------
+   ----------------------------
+   -- Базовые константы GPIO --
+   ----------------------------
 
    Low          : constant Bit_1 := 0;
    High         : constant Bit_1 := 1;
@@ -78,25 +79,25 @@ package STM32F407.GPIO is
                  Pin14 => 2#0100_0000_0000_0000#,
                  Pin15 => 2#1000_0000_0000_0000#);
 
-   --  MODER (Mode register) constants
-   type GPIO_Mode is (GPIO_Moder_IN,
-                      GPIO_Moder_OUT,
-                      GPIO_Moder_AF,
-                      GPIO_Moder_AN);
+   -- Константы MODER (Mode register)
+   type GPIO_Mode is (GPIO_Mode_IN,
+                      GPIO_Mode_OUT,
+                      GPIO_Mode_AF,
+                      GPIO_Mode_AN);
 
-   for GPIO_Mode use (GPIO_Moder_IN   => 2#00#,
-                      GPIO_Moder_OUT  => 2#01#,
-                      GPIO_Moder_AF   => 2#10#,
-                      GPIO_Moder_AN   => 2#11#);
+   for GPIO_Mode use (GPIO_Mode_IN   => 2#00#,
+                      GPIO_Mode_OUT  => 2#01#,
+                      GPIO_Mode_AF   => 2#10#,
+                      GPIO_Mode_AN   => 2#11#);
 
-   --  OTYPER (Output type register) constants
+   -- Константы OTYPER (Output type register)
    type GPIO_Type is (GPIO_Type_Push_Pull,
                       GPIO_Type_Open_Drain);
 
    for GPIO_Type use (GPIO_Type_Push_Pull  => 2#0#,
                       GPIO_Type_Open_Drain => 2#1#);
 
-   --  OSPEEDR constants
+   -- Константы OSPEEDR
    type GPIO_Speed is (GPIO_Speed_2MHz,
                        GPIO_Speed_25MHz,
                        GPIO_Speed_50MHz,
@@ -107,7 +108,7 @@ package STM32F407.GPIO is
                        GPIO_Speed_50MHz  => 2#10#,
                        GPIO_Speed_100MHz => 2#11#);
 
-   --  PUPDR constants
+   -- Константы PUPDR
    type GPIO_Pullup_Pulldown is (GPIO_No_Pull,
                                  GPIO_Pull_Up,
                                  GPIO_Pull_Down);
@@ -116,6 +117,12 @@ package STM32F407.GPIO is
                                  GPIO_Pull_Up   => 2#01#,
                                  GPIO_Pull_Down => 2#11#);
 
+   ----------------------------------------------------------------------------
+   -- Основной регистр GPIO.                                                 --
+   -- Содержит все настройки портов ввода/вывода                             --
+   -- Для Stm32f407 используйте предопределенные переменные данного типа     --
+   -- GPIOA (B, C, D, E)                                                     --
+   ----------------------------------------------------------------------------
    type rGPIO_Register is record
       MODER   : Bit_16x2;   --  mode register
       OTYPER  : Bit_32x1;   --  output type register
@@ -129,8 +136,9 @@ package STM32F407.GPIO is
       AFRH    : Bit_8x4;    --  alternate function high register
    end record with Volatile;
 
-   -- pointer to rGPIO_Register
+   -- ссылка на rGPIO_Register
    type pGPIO_Register is access all rGPIO_Register;
+
 
    for rGPIO_Register use record
       MODER   at 0  range 0 .. 31;
@@ -165,10 +173,8 @@ package STM32F407.GPIO is
      Volatile,
      Address => System'To_Address(GPIOE_Base);
 
-   type rGPIO_Pin is record
-      Port : aliased pGPIO_Register;
-      Pin_Number  : tPin;
-   end record;
+
+
 
    -- constants for a RCC register
    GPIOA_RCC_AHB1ENR_Enable : constant Byte := 2#0000_0001#;
