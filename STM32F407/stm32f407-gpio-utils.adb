@@ -53,6 +53,17 @@ package body STM32F407.GPIO.Utils is
 
    end Is_Set;
 
+   procedure Toggle_Pin(fGPIO_Pin : in out rGPIO_Pin) is
+   begin
+
+      if (Is_Set (fGPIO_Pin)) then
+         Set_Pin(fGPIO_Pin, Low);
+      else
+         Set_Pin(fGPIO_Pin, High);
+      end if;
+
+   end;
+
    procedure Init_as_Digital_Output(fGPIO_Pin : in out rGPIO_Pin) is
    begin
 
